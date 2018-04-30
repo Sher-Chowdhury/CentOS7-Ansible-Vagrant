@@ -37,7 +37,7 @@ Vagrant.configure(2) do |config|
   end
 
 
-  config.vm.define "samba_client" do |ansible_client_config|
+  config.vm.define "ansible_client" do |ansible_client_config|
     ansible_client_config.vm.box = "bento/centos-7.4"
     ansible_client_config.vm.hostname = "ansible-client.example.com"
     ansible_client_config.vm.network "private_network", ip: "10.20.4.11", :netmask => "255.255.255.0", virtualbox__intnet: "intnet2"
