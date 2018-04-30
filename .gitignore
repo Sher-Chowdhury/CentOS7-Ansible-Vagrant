@@ -11,3 +11,4 @@
 *.box
 .vagrant
 /tmp
+/files/id_rsa.pub
