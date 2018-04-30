@@ -18,13 +18,13 @@ end
 
 
 Vagrant.configure(2) do |config|
-  config.vm.define "ansible_controller" do |samba_storage_config|
-    samba_storage_config.vm.box = "bento/centos-7.4"
-    samba_storage_config.vm.hostname = "ansible_controller.example.com"
+  config.vm.define "ansible_controller" do |ansible_controller_config|
+    ansible_controller_config.vm.box = "bento/centos-7.4"
+    ansible_controller_config.vm.hostname = "ansible-controller.example.com"
     # https://www.vagrantup.com/docs/virtualbox/networking.html
-    samba_storage_config.vm.network "private_network", ip: "10.20.4.10", :netmask => "255.255.255.0", virtualbox__intnet: "intnet2"
+    ansible_controller_config.vm.network "private_network", ip: "10.20.4.10", :netmask => "255.255.255.0", virtualbox__intnet: "intnet2"
 
-    samba_storage_config.vm.provider "virtualbox" do |vb|
+    ansible_controller_config.vm.provider "virtualbox" do |vb|
       vb.gui = true
       vb.memory = "1024"
       vb.cpus = 2
@@ -32,30 +32,30 @@ Vagrant.configure(2) do |config|
       vb.name = "centos7_samba_storage"
     end
 
-    samba_storage_config.vm.provision "shell", path: "scripts/install-rpms.sh", privileged: true
-    samba_storage_config.vm.provision "shell", path: "scripts/ansible_controller_setup.sh", privileged: true
+    ansible_controller_config.vm.provision "shell", path: "scripts/install-rpms.sh", privileged: true
+    ansible_controller_config.vm.provision "shell", path: "scripts/ansible_controller_setup.sh", privileged: true
   end
 
 
-  config.vm.define "samba_client" do |samba_client_config|
-    samba_client_config.vm.box = "bento/centos-7.4"
-    samba_client_config.vm.hostname = "ansible_client.example.com"
-    samba_client_config.vm.network "private_network", ip: "10.20.4.11", :netmask => "255.255.255.0", virtualbox__intnet: "intnet2"
+  config.vm.define "samba_client" do |ansible_client_config|
+    ansible_client_config.vm.box = "bento/centos-7.4"
+    ansible_client_config.vm.hostname = "ansible-client.example.com"
+    ansible_client_config.vm.network "private_network", ip: "10.20.4.11", :netmask => "255.255.255.0", virtualbox__intnet: "intnet2"
 
-    samba_client_config.vm.provider "virtualbox" do |vb|
+    ansible_client_config.vm.provider "virtualbox" do |vb|
       vb.gui = true
       vb.memory = "1024"
       vb.cpus = 2
       vb.name = "centos7_samba_client"
     end
 
-    samba_client_config.vm.provision "shell", path: "scripts/install-rpms.sh", privileged: true
-    samba_client_config.vm.provision "shell", path: "scripts/ansible_client_setup.sh", privileged: true
+    ansible_client_config.vm.provision "shell", path: "scripts/install-rpms.sh", privileged: true
+    ansible_client_config.vm.provision "shell", path: "scripts/ansible_client_setup.sh", privileged: true
   end
 
   config.vm.provision :hosts do |provisioner|
-    provisioner.add_host '10.20.4.10', ['samba-storage.local']
-    provisioner.add_host '10.20.4.11', ['samba-client.local']
+    provisioner.add_host '10.20.4.10', ['ansible-controller.example.com']
+    provisioner.add_host '10.20.4.11', ['ansible-client.example.com']
   end
 
 end
