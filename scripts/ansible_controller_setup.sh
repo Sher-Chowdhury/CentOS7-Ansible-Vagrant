@@ -20,11 +20,8 @@ cp -f /root/.ssh/id_rsa.pub /vagrant/files/
 
 
 
+cp /etc/ansible/ansible.cfg /etc/ansible/ansible.cfg-orig
 
-#ssh-copy-id ansible-client.example.com <<EOF
-#vagrant
-#EOF
-
-
+sed -i 's/#host_key_checking = False/host_key_checking = False/g' /etc/ansible/ansible.cfg
 
 exit 0
