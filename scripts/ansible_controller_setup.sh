@@ -16,7 +16,7 @@ ssh-keygen <<EOF
 
 
 EOF
-cp /root/.ssh/id_rsa.pub /vagrant/files/
+cp -f /root/.ssh/id_rsa.pub /vagrant/files/
 
 
 
